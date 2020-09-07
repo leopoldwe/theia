@@ -38,6 +38,7 @@ import { ExtPluginApi } from '../common/plugin-ext-api-contribution';
 import { RPCProtocol } from '../common/rpc-protocol';
 import { Emitter } from '@theia/core/lib/common/event';
 import { WebviewsExtImpl } from './webviews';
+import { TerminalServiceExtImpl } from './terminal-ext';
 
 export interface PluginHost {
 
@@ -106,6 +107,7 @@ export class PluginManagerExtImpl implements PluginManagerExt, PluginManager {
     constructor(
         private readonly host: PluginHost,
         private readonly envExt: EnvExtImpl,
+        private readonly terminalService: TerminalServiceExtImpl,
         private readonly storageProxy: KeyValueStorageProxy,
         private readonly preferencesManager: PreferenceRegistryExtImpl,
         private readonly webview: WebviewsExtImpl,
@@ -355,7 +357,8 @@ export class PluginManagerExtImpl implements PluginManagerExt, PluginManager {
             asAbsolutePath: asAbsolutePath,
             logPath: logPath,
             storagePath: storagePath,
-            globalStoragePath: globalStoragePath
+            globalStoragePath: globalStoragePath,
+            environmentVariableCollection: this.terminalService.getEnvironmentVariableCollection(plugin.model.id)
         };
         this.pluginContextsMap.set(plugin.model.id, pluginContext);
 

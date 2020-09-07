@@ -78,6 +78,7 @@ import { QuickTitleButton } from '@theia/core/lib/common/quick-open-model';
 import * as files from '@theia/filesystem/lib/common/files';
 import { BinaryBuffer } from '@theia/core/lib/common/buffer';
 import { ResourceLabelFormatter } from '@theia/core/lib/common/label-protocol';
+import { SerializableEnvironmentVariableCollection } from '@theia/variable-resolver/lib/common/environmentVariable';
 
 export interface PreferenceData {
     [scope: number]: any;
@@ -236,6 +237,7 @@ export interface TerminalServiceExt {
     $terminalOnInput(id: string, data: string): void;
     $terminalSizeChanged(id: string, cols: number, rows: number): void;
     $currentTerminalChanged(id: string | undefined): void;
+    $initEnvironmentVariableCollections(collections: [string, SerializableEnvironmentVariableCollection][]): void;
 }
 export interface OutputChannelRegistryExt {
     createOutputChannel(name: string, pluginInfo: PluginInfo): theia.OutputChannel
@@ -303,6 +305,7 @@ export interface TerminalServiceMain {
      * @param id - terminal id.
      */
     $dispose(id: string): void;
+    $setEnvironmentVariableCollection(extensionIdentifier: string, persistent: boolean, collection: SerializableEnvironmentVariableCollection | undefined): void;
 }
 
 export interface AutoFocus {
